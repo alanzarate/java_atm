@@ -1,0 +1,95 @@
+1. Pantalla de Bienvenida
+
+***************************
+
+Bienvenido al BANCO BISA
+
+Ingrese su codigo de cliente: 
+Ingrese su pin:
+
+
+***************************
+
+1.1 Credenciales incorrectas
+
+***************************
+
+Bienvenido al BANCO BISA
+
+Error  en codigo o pin, por favor intente de nuevo.
+
+Ingrese su codigo de cliente: 
+Ingrese su pin:
+
+
+***************************
+
+2. Pantalla de Opciones si coloca bien codigo y pin
+
+***************************
+
+Bienvenido al BANCO BISA
+
+
+Elija una opción:
+
+1. Ver Saldo
+2. Retirar dinero.
+3. Depoistar dinero.
+4. Salir
+
+***************************
+
+3. Ver Saldo
+
+***************************
+
+Bienvenido al BANCO BISA
+
+
+Elija una opción:
+
+1. Ver Saldo
+2. Retirar dinero. *
+3. Depoistar dinero.
+4. Salir
+
+***************************
+
+4. Selección de cuentas
+
+***************************
+
+Bienvenido al BANCO BISA
+
+
+Elija una cuenta:
+
+1. Cuentas 1231232 Caja de Ahorros  (BOB) *
+2. Cuentas 1234232 Caja de Ahorros  (BOB)
+3. Cuentas 3124444 Caja de Ahorros  (BOB)
+4. Volver al menú principal
+
+***************************
+
+5. Retirar Direo
+
+***************************
+
+Bienvenido al BANCO BISA
+
+
+Información de la cuenta:
+
+Cuenta 1231232 
+Caja de Ahorros  
+12000 BOB
+
+Ingrese el monto que desea debitar: 
+
+***************************
+
+
+
+
+
