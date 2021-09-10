@@ -36,6 +36,7 @@ public class App
         cgomez.agregarCuenta(cta3Cgomez);
         bisa.agregarCliente(cgomez);
         
-        new Cajero(bisa);
+        Cajero cajero = new Cajero(bisa);
+        cajero.iniciarCajero();
     }
 }

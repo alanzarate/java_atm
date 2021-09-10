@@ -76,5 +76,11 @@ public class Pantalla {
        return valores;
         
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+    
+    
         
 }

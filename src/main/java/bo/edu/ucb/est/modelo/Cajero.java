@@ -15,25 +15,92 @@ import java.util.List;
  */
 public class Cajero {
     
-    private Pantalla pantallaIngreso;
-    private Pantalla pantallaMenuPrincipal;
+    
     private Pantalla pantallaError;
     private Pantalla pantallaRealizarDeposito;
     private Pantalla pantallaRealizarRetiro;
     private Banco banco;
+    private Cliente cliente;
     
 
     public Cajero(Banco banco) {
         this.banco = banco;
+        
+       
+        
+        // Las siguientes son pantallas dinamicas, es decir su contenido
+        // va a cambiar con el comportamiento del programa
+        
+        // Iniciamos pantalla de error.
+        pantallaError = new Pantalla("Ocurrio un error");        
+        // Corremos primera pantalla
+        
+    }
+    
+    public void iniciarCajero() {
+        boolean salir = false;
+        while(!salir) {
+            // Primero mostramos la pantalla de ingreso
+            Pantalla pantallaIngreso = construirPantallaIngreso();
+            List<Object> credenciales = pantallaIngreso.desplegar(); // Obtenemos las credenciales
+            
+            // Puede retornar pantalla de error o menu de opciones
+            Pantalla resultadoValidarCredenciales = controladorValidarCredenciales(credenciales);
+            if (resultadoValidarCredenciales.getTitulo().equals("Cajero ATM")) {
+                //Se muestra el menu de opciones
+                List<Object> opcionListado = resultadoValidarCredenciales.desplegar();
+                Integer opcion = (Integer) opcionListado.get(0);
+                if (opcion == 1) { // Ver saldo
+                    verSaldo();
+                } else if (opcion == 2){ // Depositar
+                } 
+            } else {
+                // Es error y se muestra el mensaje de error
+                resultadoValidarCredenciales.desplegar();
+            }
+
+        }
+    }
+    
+ 
+    
+    /**
+     * Este metodo valida las credenciales ingresadas por el usuario, entonces
+     * existen opciones.
+     *  1. Las credenciales sean válidas.: Retorna la pantalla de menú principal
+     *  2. LAs credenciales sean inválidas: Retorna la pantalla de error
+     * @param credenciales
+     * @return 
+     */
+    private Pantalla controladorValidarCredenciales(List<Object> credenciales) {
+        Pantalla resultado = null;
+        cliente = banco.buscarClientePorCodigo( (String) credenciales.get(0), 
+                (String) credenciales.get(1));
+        if (cliente == null) { // Significa que las credenciales son incorrectas
+            List contenido = new ArrayList();
+            contenido.add("No se encontró al usuario.");
+            pantallaError.setContenido(contenido);
+            pantallaError.desplegar();
+            resultado = pantallaError;
+        } else {
+            resultado = construirPantallaPrincipal();
+        }
+        return resultado;
+    }
+    
+    private Pantalla construirPantallaIngreso() {
         // Inicialización de pantallas y configuración.
-        pantallaIngreso = new Pantalla("Cajero automático");
+        Pantalla pantallaIngreso = new Pantalla("Cajero automático");
         List ingresoContenido = new ArrayList();
         ingresoContenido.add(" Bienvenido al sistema, por favor ingrese su credenciales");
         pantallaIngreso.setContenido(ingresoContenido);
         pantallaIngreso.definirDatoEntrada("Código de usuario: ", "String");
         pantallaIngreso.definirDatoEntrada("PIN: ", "String");
-        
-        pantallaMenuPrincipal = new Pantalla("Cajero ATM");
+        return pantallaIngreso;
+    }
+    
+    private Pantalla construirPantallaPrincipal() {
+        Pantalla pantallaMenuPrincipal  = new Pantalla("Cajero ATM");
         List menuPrincipalContenido = new ArrayList();
         menuPrincipalContenido.add(" Elija una de las siguientes opciones:");
         menuPrincipalContenido.add(" 1. Ver saldo.");
@@ -43,43 +110,10 @@ public class Cajero {
         menuPrincipalContenido.add(" ");
         pantallaMenuPrincipal.setContenido(menuPrincipalContenido);
         pantallaMenuPrincipal.definirDatoEntrada("Seleccione una opción: ", "Integer");
-        
-        // Las siguientes son pantallas dinamicas, es decir su contenido
-        // va a cambiar con el comportamiento del programa
-        
-        // Iniciamos pantalla de error.
-        pantallaError = new Pantalla("Ocurrio un error");        
-        // Corremos primera pantalla
-        
-        mostrarPantallaPrincipal();
-        
+       return pantallaMenuPrincipal;
     }
     
-    private void mostrarPantallaPrincipal() {
-        List<Object> credenciales = pantallaIngreso.desplegar();
-        Cliente cliente = banco.buscarClientePorCodigo( (String) credenciales.get(0), 
-                (String) credenciales.get(1));
-        
-        if (cliente == null) { // Significa que las credenciales son incorrectas
-            List contenido = new ArrayList();
-            contenido.add("No se encontró al usuario.");
-            pantallaError.setContenido(contenido);
-            pantallaError.desplegar();
-            mostrarPantallaPrincipal();
-        } else {
-            List<Object> opcionListado = pantallaMenuPrincipal.desplegar();
-            Integer opcion = (Integer) opcionListado.get(0);
-            if (opcion == 1) { // Ver saldo
-                verSaldo(cliente);
-            } else if (opcion == 2){ // Depositar
-            } else {
-               mostrarPantallaPrincipal();
-            }
-        
-        }
-    }
-    
-    private void verSaldo(Cliente cliente) {
+    private void verSaldo() {
         List<String> listadoCuentasContenido = new ArrayList();
         listadoCuentasContenido.add(" Elija una sus cuentas:");
         for ( int i = 0 ; i < cliente.getCuentas().size() ; i ++ ) {
@@ -102,9 +136,6 @@ public class Cajero {
         contenidoVerSaldo.add("Saldo: " + cuenta.getMoneda() + " " + cuenta.getSaldo());
         pantallaVerSaldo.setContenido(contenidoVerSaldo);
         pantallaVerSaldo.desplegar();
-        mostrarPantallaPrincipal();
-        
-        
     }
     
     
