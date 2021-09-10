@@ -43,24 +43,35 @@ public class Cajero {
             // Primero mostramos la pantalla de ingreso
             Pantalla pantallaIngreso = construirPantallaIngreso();
             List<Object> credenciales = pantallaIngreso.desplegar(); // Obtenemos las credenciales
-            
+            boolean salir2 = false;
+            while(!salir2){
             // Puede retornar pantalla de error o menu de opciones
             Pantalla resultadoValidarCredenciales = controladorValidarCredenciales(credenciales);
             if (resultadoValidarCredenciales.getTitulo().equals("Cajero ATM")) {
-                //Se muestra el menu de opciones
-                List<Object> opcionListado = resultadoValidarCredenciales.desplegar();
-                Integer opcion = (Integer) opcionListado.get(0);
-                if (opcion == 1) { // Ver saldo
-                    verSaldo();
-                } else if (opcion == 2){ // Depositar
-                } 
+               
+                    List<Object> opcionListado = resultadoValidarCredenciales.desplegar();
+                    Integer opcion = (Integer) opcionListado.get(0);
+                    if (opcion == 1) { // Ver saldo
+                        verSaldo();
+                        
+                    } else if (opcion == 2){ // Depositar
+                        depositar();
+                    } else if (opcion == 3){  // retiara
+                        retirar();
+                    }else if (opcion == 4){
+                        salir2 = true;
+                    }
+                
+                
             } else {
                 // Es error y se muestra el mensaje de error
                 resultadoValidarCredenciales.desplegar();
             }
+        }
 
         }
     }
+    
     
  
     
@@ -104,8 +115,8 @@ public class Cajero {
         List menuPrincipalContenido = new ArrayList();
         menuPrincipalContenido.add(" Elija una de las siguientes opciones:");
         menuPrincipalContenido.add(" 1. Ver saldo.");
-        menuPrincipalContenido.add(" 2. Retirar dinero.");
-        menuPrincipalContenido.add(" 3. Depositar dinero.");
+        menuPrincipalContenido.add(" 2. Depositar dinero.");
+        menuPrincipalContenido.add(" 3. Retirar dinero.");
         menuPrincipalContenido.add(" 4. Salir");
         menuPrincipalContenido.add(" ");
         pantallaMenuPrincipal.setContenido(menuPrincipalContenido);
@@ -136,6 +147,54 @@ public class Cajero {
         contenidoVerSaldo.add("Saldo: " + cuenta.getMoneda() + " " + cuenta.getSaldo());
         pantallaVerSaldo.setContenido(contenidoVerSaldo);
         pantallaVerSaldo.desplegar();
+    }
+    private void depositar(){
+        List<String> listadoCuentasContenido = new ArrayList();
+        listadoCuentasContenido.add(" Elija una sus cuentas:");
+        for ( int i = 0 ; i < cliente.getCuentas().size() ; i ++ ) {
+            Cuenta cuenta = cliente.getCuentas().get(i);
+            listadoCuentasContenido.add( (i + 1) + " " + cuenta.getNroCuenta() 
+                    + " " + cuenta.getTipo());
+        }
+        Pantalla pantallaListadoCuentas = new Pantalla("Sus cuentas");
+        pantallaListadoCuentas.definirDatoEntrada("Seleccione una opción: ", "Integer");
+        pantallaListadoCuentas.setContenido(listadoCuentasContenido);
+        List<Object> datosIntroducidos = pantallaListadoCuentas.desplegar(); // Retorna la cuenta que eligió
+        Integer indiceCuenta = (Integer) datosIntroducidos.get(0);
+        //TODO validar que el indiceCuenta sea un numero entre 1 y el numero total de cuentas
+        // La cuenta para mostrar el saldo
+        Cuenta cuenta = cliente.getCuentas().get(indiceCuenta - 1);
+        Pantalla pantallaDepositar = new Pantalla("Deposito");
+        List<String> contenidoDelDeposito = new ArrayList();
+        //contenidoDelDeposito.add("Monto : ");
+        pantallaDepositar.setContenido(contenidoDelDeposito);
+        pantallaDepositar.definirDatoEntrada("Monto ", "Double");
+        List<Object> monto = pantallaDepositar.desplegar();
+        cuenta.depositar((Double)monto.get(0));
+    }
+     private void retirar(){
+        List<String> listadoCuentasContenido = new ArrayList();
+        listadoCuentasContenido.add(" Elija una sus cuentas:");
+        for ( int i = 0 ; i < cliente.getCuentas().size() ; i ++ ) {
+            Cuenta cuenta = cliente.getCuentas().get(i);
+            listadoCuentasContenido.add( (i + 1) + " " + cuenta.getNroCuenta() 
+                    + " " + cuenta.getTipo());
+        }
+        Pantalla pantallaListadoCuentas = new Pantalla("Sus cuentas");
+        pantallaListadoCuentas.definirDatoEntrada("Seleccione una opción: ", "Integer");
+        pantallaListadoCuentas.setContenido(listadoCuentasContenido);
+        List<Object> datosIntroducidos = pantallaListadoCuentas.desplegar(); // Retorna la cuenta que eligió
+        Integer indiceCuenta = (Integer) datosIntroducidos.get(0);
+        //TODO validar que el indiceCuenta sea un numero entre 1 y el numero total de cuentas
+        // La cuenta para mostrar el saldo
+        Cuenta cuenta = cliente.getCuentas().get(indiceCuenta - 1);
+        Pantalla pantallaRetirar = new Pantalla("Retiro");
+        List<String> contenidoDelDeposito = new ArrayList();
+        //contenidoDelDeposito.add("Monto : ");
+        pantallaRetirar.setContenido(contenidoDelDeposito);
+        pantallaRetirar.definirDatoEntrada("Monto ", "Double");
+        List<Object> monto = pantallaRetirar.desplegar();
+        cuenta.retirar((Double)monto.get(0));
     }
     
     

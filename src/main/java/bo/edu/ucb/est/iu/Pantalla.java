@@ -69,9 +69,11 @@ public class Pantalla {
                 valores.add(sc.nextLine());
             } else if (tipoDatoIn.get(i).equals("Integer")) {
                 valores.add(sc.nextInt());
+            } else if (tipoDatoIn.get(i).equals("Double")){
+                valores.add(sc.nextDouble());
             }
         }
-        
+            
        // Pedir los datos de entrada.
        return valores;
         
