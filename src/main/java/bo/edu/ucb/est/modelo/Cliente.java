@@ -25,9 +25,14 @@ public class Cliente {
         this.cuentas = new ArrayList();
     }
 
+    /**
+     * Este metodo permite agregar una cuenta a un cliente existente
+     * @param cuenta objeto de tipo Cuenta que se le agrega al cliente.
+     */
     public void agregarCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
     }
+    
     public String getNombre() {
         return nombre;
     }

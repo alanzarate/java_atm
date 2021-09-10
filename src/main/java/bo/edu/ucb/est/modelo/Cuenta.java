@@ -12,12 +12,14 @@ package bo.edu.ucb.est.modelo;
 public class Cuenta {
     private String moneda;
     private String tipo;
+    private String nroCuenta;
     private double saldo;
 
-    public Cuenta(String moneda, String tipo, double saldoInicial) {
+    public Cuenta(String moneda, String nroCuenta, String tipo, double saldoInicial) {
         this.moneda = moneda;
         this.tipo = tipo;
         this.saldo = saldoInicial;
+        this.nroCuenta = nroCuenta;
     }
 
     public boolean retirar(double monto) {
@@ -61,6 +63,15 @@ public class Cuenta {
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
+
+    public String getNroCuenta() {
+        return nroCuenta;
+    }
+
+    public void setNroCuenta(String nroCuenta) {
+        this.nroCuenta = nroCuenta;
+    }
+    
     
     
 }
